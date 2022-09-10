@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import school.hei.haapi.model.Place;
+import school.hei.haapi.model.validator.PlaceValidator;
 import school.hei.haapi.repository.PlaceRepository;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PlaceService {
     private PlaceRepository repository;
+    private PlaceValidator validator;
 
     public List<Place> getAll() {
         return repository.findAll();
@@ -23,6 +25,7 @@ public class PlaceService {
 
     @Transactional
     public List<Place> saveAll(List<Place> toSave) {
+        validator.accept(toSave);
         return repository.saveAll(toSave);
     }
 }
