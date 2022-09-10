@@ -838,7 +838,7 @@ paths:
   /events:
     get:
       tags:
-        - Event
+        - Attending
       summary: Get all events
       operationId: getEvents
       responses:
@@ -862,7 +862,7 @@ paths:
           $ref: '#/components/responses/500'
     post:
       tags:
-        - Event
+        - Attending
       summary: create events
       operationId: postEvents
       requestBody:
@@ -895,7 +895,7 @@ paths:
           $ref: '#/components/responses/500'
     put:
       tags:
-        - Event
+        - Attending
       summary: update events
       description: Update events when `id` are provided.
       operationId: putEvents
