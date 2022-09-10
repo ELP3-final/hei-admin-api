@@ -10,6 +10,8 @@ import lombok.ToString;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -43,7 +45,11 @@ public class Event implements Serializable {
 
     private String status;
 
-    private String place;
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Place place;
 
+    @ManyToOne
+    @JoinColumn(name = "id")
     private Group group;
 }
