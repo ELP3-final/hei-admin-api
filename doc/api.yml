@@ -835,6 +835,94 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
+  /places:
+    get:
+      tags:
+        - Attending
+      summary: get all places
+      description: get all places
+      operationId: getPlaces
+      responses:
+        "200":
+          description: all places
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Place"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
+    put:
+      tags:
+        - Attending
+      summary: save or update existing places
+      description: save if id are provided. Create them otherwise
+      operationId: saveOrUpdatePlaces
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Place"
+      responses:
+        "200":
+          description: the saved/updated places
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Place"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
+  /places/{id}:
+      get:
+        tags:
+          - Attending
+        summary: get place by id
+        description: get place by identifier
+        operationId: getPlaceById
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: string
+        responses:
+          "200":
+            description: the identified place
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Place"
+          "400":
+            $ref: "#/components/responses/400"
+          "403":
+            $ref: "#/components/responses/403"
+          "404":
+            $ref: "#/components/responses/404"
+          "429":
+            $ref: "#/components/responses/429"
+          "500":
+            $ref: "#/components/responses/500"
   /events:
     get:
       tags:
@@ -1071,7 +1159,6 @@ components:
     Fee:
       allOf:
         - $ref: '#/components/schemas/CreateFee'
-      type: object
       properties:
         id:
           type: string
@@ -1289,3 +1376,17 @@ components:
           $ref: '#/components/schemas/Group'
       allOf:
         - $ref: '#/components/schemas/Events'
+
+    CreatePlace:
+      type: object
+      properties:
+        label:
+          type: string
+          example: "HEI Ivandry"
+    Place:
+      allOf:
+        - $ref: "#/components/schemas/CreatePlace"
+      properties:
+        id:
+          type: "string"
+          example: "uuid"
