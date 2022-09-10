@@ -894,35 +894,35 @@ paths:
         "500":
           $ref: "#/components/responses/500"
   /places/{id}:
-      get:
-        tags:
-          - Attending
-        summary: get place by id
-        description: get place by identifier
-        operationId: getPlaceById
-        parameters:
-          - name: id
-            in: path
-            required: true
-            schema:
-              type: string
-        responses:
-          "200":
-            description: the identified place
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/Place"
-          "400":
-            $ref: "#/components/responses/400"
-          "403":
-            $ref: "#/components/responses/403"
-          "404":
-            $ref: "#/components/responses/404"
-          "429":
-            $ref: "#/components/responses/429"
-          "500":
-            $ref: "#/components/responses/500"
+    get:
+      tags:
+        - Attending
+      summary: get place by id
+      description: get place by identifier
+      operationId: getPlaceById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: the identified place
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Place"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
   /events:
     get:
       tags:
@@ -948,44 +948,11 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-    post:
-      tags:
-        - Attending
-      summary: create events
-      operationId: postEvents
-      requestBody:
-        required: true
-        description: Events to create
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/CreateEvent'
-      responses:
-        '200':
-          description: Created events
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Event'
-        '400':
-          $ref: '#/components/responses/400'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
     put:
       tags:
         - Attending
-      summary: update events
-      description: Update events when `id` are provided.
+      summary: create or update events
+      description: Update events when `id` are provided and create events otherwise.
       operationId: putEvents
       requestBody:
         required: true
@@ -1015,6 +982,36 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
+  /events/{id}:
+    get:
+      tags:
+        - Attending
+      summary: get events by id
+      description: get events by identifier
+      operationId: getEventsById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: the identified place
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
 components:
   securitySchemes:
     BearerAuth:
