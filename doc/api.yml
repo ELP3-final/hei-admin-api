@@ -1362,6 +1362,7 @@ components:
           enum:
             - ONGOING
             - CANCELED
+            - FINISHED
     Event:
       type: object
       properties:
