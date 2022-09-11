@@ -44,7 +44,7 @@ class PlaceIT {
     private CognitoComponent cognitoComponentMock;
 
     private static ApiClient anApiClient(String token) {
-        return TestUtils.anApiClient(token, PaymentIT.ContextInitializer.SERVER_PORT);
+        return TestUtils.anApiClient(token, PlaceIT.ContextInitializer.SERVER_PORT);
     }
 
     static Place place1() {
