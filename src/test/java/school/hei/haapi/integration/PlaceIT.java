@@ -18,6 +18,7 @@ import school.hei.haapi.integration.conf.TestUtils;
 
 import java.util.List;
 
+import static java.util.UUID.randomUUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -60,7 +61,7 @@ class PlaceIT {
 
     public static Place someCreatablePlace() {
         Place place = new Place();
-        place.setLabel("Some name");
+        place.setLabel("label-"+ randomUUID());
         return place;
     }
 
@@ -156,13 +157,10 @@ class PlaceIT {
     }
 
     @Test
-    void teacher_write_ok() {
-    }
+    void teacher_write_ok() throws ApiException {
+        ApiClient teacher1Client = anApiClient(TEACHER1_TOKEN);
+        AttendingApi api = new AttendingApi(teacher1Client);
 
-    @Test
-    void manager_write_update_ok() throws ApiException {
-        ApiClient manager1Client = anApiClient(MANAGER1_TOKEN);
-        AttendingApi api = new AttendingApi(manager1Client);
         List<Place> toUpdate = api.saveOrUpdatePlaces(List.of(
                 someCreatablePlace(),
                 someCreatablePlace()));
@@ -178,22 +176,26 @@ class PlaceIT {
         assertTrue(updated.contains(toUpdate1));
     }
 
-//    @Test
-//    void manager_write_with_some_bad_fields_ko() {
-//        ApiClient manager1Client = anApiClient(MANAGER1_TOKEN);
-//        AttendingApi api = new AttendingApi(manager1Client);
-//        CreatePlace toCreate1 = new CreatePlace().label(null);
-//
-//        ApiException exception1 = assertThrows(ApiException.class,
-//                () -> api.saveOrUpdatePlaces(List.of(toCreate1)));
-//        ApiException exception2 = assertThrows(ApiException.class,
-//                () -> api.createStudentPayments(STUDENT1_ID, FEE1_ID, List.of(toCreate2)));
-//
-//        String exceptionMessage1 = exception1.getMessage();
-//        String exceptionMessage2 = exception2.getMessage();
-//        assertTrue(exceptionMessage1.contains("Amount is mandatory"));
-//        assertTrue(exceptionMessage2.contains("Amount must be positive"));
-//    }
+    @Test
+    void manager_write_update_ok() throws ApiException {
+        ApiClient manager1Client = anApiClient(MANAGER1_TOKEN);
+        AttendingApi api = new AttendingApi(manager1Client);
+        List<Place> toUpdate = api.saveOrUpdatePlaces(List.of(
+                someCreatablePlace(),
+                someCreatablePlace()));
+        Place toUpdate0 = toUpdate.get(0);
+        toUpdate0.setLabel("Ambohimanarina");
+        Place toUpdate1 = toUpdate.get(1);
+        toUpdate1.setLabel("Analakely");
+
+        List<Place> updated = api.saveOrUpdatePlaces(toUpdate);
+
+        assertEquals(2, updated.size());
+        assertTrue(updated.contains(toUpdate0));
+        assertTrue(updated.contains(toUpdate1));
+    }
+
+
 
     static class ContextInitializer extends AbstractContextInitializer {
         public static final int SERVER_PORT = anAvailableRandomPort();
