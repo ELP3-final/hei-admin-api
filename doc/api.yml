@@ -929,6 +929,15 @@ paths:
         - Attending
       summary: Get all events
       operationId: getEvents
+      parameters:
+        - name: page
+          in: query
+          schema:
+            $ref: '#/components/schemas/Page'
+        - name: page_size
+          in: query
+          schema:
+            $ref: '#/components/schemas/PageSize'
       responses:
         '200':
           description: List of events
@@ -962,7 +971,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/UpdateEvent'
+                $ref: '#/components/schemas/Event'
       responses:
         '200':
           description: Created events
@@ -1120,11 +1129,8 @@ components:
         creation_datetime:
           type: string
           format: date-time
-    Course:
-      type: object
+    CreateCourse:
       properties:
-        id:
-          type: string
         ref:
           type: string
           example: PROG1
@@ -1135,6 +1141,12 @@ components:
           type: integer
         total_hours:
           type: integer
+    Course:
+      allOf:
+        - $ref: "#/components/schemas/CreateCourse"
+      properties:
+        id:
+          type: string
     CreateFee:
       type: object
       properties:
@@ -1292,89 +1304,18 @@ components:
           enum:
             - ONGOING
             - CANCELED
-        place_id:
-          type: string
-        group_id:
-          type: string
-    UpdateEvent:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-            - COURSE
-            - EXAMEN
-            - OTHER
-        date:
-          type: string
-          format: date-time
-        start_time:
-          type: string
-          format: time
-        finish_time:
-          type: string
-          format: time
-        supervisor:
-          type: string
-          enum:
-            - TEACHER
-            - ADMINISTRATOR
-        status:
-          type: string
-          enum:
-            - ONGOING
-            - CANCELED
-        place_id:
-          type: string
-        group_id:
-          type: string
-    Events:
-      type: object
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-            - COURSE
-            - EXAMEN
-            - OTHER
-        date:
-          type: string
-          format: date-time
-        start_time:
-          type: string
-          format: time
-        finish_time:
-          type: string
-          format: time
-        supervisor:
-          type: string
-          enum:
-            - TEACHER
-            - ADMINISTRATOR
-        status:
-          type: string
-          enum:
-            - ONGOING
-            - CANCELED
             - FINISHED
+        place_id:
+          type: string
+        group_id:
+          type: string
     Event:
       type: object
       properties:
         id:
           type: string
-        place:
-          $ref: '#/components/schemas/Place'
-        group:
-          $ref: '#/components/schemas/Group'
       allOf:
-        - $ref: '#/components/schemas/Events'
-
+        - $ref: '#/components/schemas/CreateEvent'
     CreatePlace:
       type: object
       properties:
