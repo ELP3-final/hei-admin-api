@@ -4,72 +4,40 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import school.hei.haapi.endpoint.rest.model.CreateEvent;
 import school.hei.haapi.model.Event;
-import school.hei.haapi.model.exception.BadRequestException;
 
-import java.util.Objects;
+import java.time.Instant;
+
 
 @Component
 @AllArgsConstructor
 public class EventMapper {
-    public Event toRestEvent(school.hei.haapi.model.Event event) {
-        return new Event()
-                .id(event.getId())
-                .name(event.getName())
-                .type(event.getType())
-                .date(event.getDate())
-                .startTime(event.getStartTime())
-                .finishTime(event.getFinishTime())
-                .supervisor(event.getSupervisor())
-                .status(event.getStatus())
-                .placeId(event.getPlace().getId())
-                .groupId(event.getGroup().getId());
+    public school.hei.haapi.endpoint.rest.model.Event toRestEvent(Event event) {
+        var restEvent = new school.hei.haapi.endpoint.rest.model.Event();
+            restEvent.setId(event.getId());
+            restEvent.setName(event.getName());
+            restEvent.setType(event.getType());
+            restEvent.setDate(Instant.from(event.getDate()));
+            restEvent.setStartTime(event.getStartTime());
+            restEvent.setFinishTime(event.getFinishTime());
+            restEvent.setSupervisor(event.getSupervisor());
+            restEvent.setStatus(event.getStatus());
+            restEvent.setGroupId(restEvent.getGroupId());
+            restEvent.setPlaceId(restEvent.getPlaceId());
 
+            return restEvent;
     }
 
-    public school.hei.haapi.model.Event toDomainEvent(CreateEvent createEvent) {
-        return school.hei.haapi.model.Event.builder()
-                .type(toDomainEventType(Objects.requireNonNull(createEvent.getType())))
-                .date()
-                .startTime()
-                .finishTime()
-                .supervisor(toDomainEventSupervisor(Objects.requireNonNull(createEvent.getSupervisor())))
-                .status(toDomainEventStatus(Objects.requireNonNull(createEvent.getStatus())))
+    public Event toDomainEvent(CreateEvent restEvent) {
+        return Event.builder()
+                .name(restEvent.getName())
+                .type(school.hei.haapi.endpoint.rest.model.Event.TypeEnum.valueOf(restEvent.getType().toString()))
+                .startTime(restEvent.getStartTime())
+                .finishTime(restEvent.getFinishTime())
+                .supervisor(school.hei.haapi.endpoint.rest.model.Event.SupervisorEnum.valueOf(restEvent.getType().toString()))
+                .status(school.hei.haapi.endpoint.rest.model.Event.StatusEnum.valueOf(restEvent.getType().toString()))
+                .id(restEvent.getPlaceId())
+                .id(restEvent.getGroupId())
                 .build();
-    }
-
-    private Event.TypeEnum toDomainEventType(CreateEvent.TypeEnum createEventType) {
-        switch (createEventType) {
-            case COURSE:
-                return Event.TypeEnum.COURSE;
-            case OTHER:
-                return Event.TypeEnum.OTHER;
-            default:
-                throw new BadRequestException("Unexpected eventType: " + createEventType.getValue());
-        }
-    }
-
-    private Event.SupervisorEnum toDomainEventSupervisor(CreateEvent.SupervisorEnum createEventSupervisor) {
-        switch (createEventSupervisor) {
-            case TEACHER:
-                return Event.SupervisorEnum.TEACHER;
-            case ADMINISTRATOR:
-                return Event.SupervisorEnum.ADMINISTRATOR;
-            default:
-                throw new BadRequestException("Unexpected eventSupervisor: " + createEventSupervisor.getValue());
-        }
-    }
-
-    private Event.StatusEnum toDomainEventStatus(CreateEvent.StatusEnum createEventStatus) {
-        switch (createEventStatus) {
-            case ONGOING:
-                return Event.StatusEnum.ONGOING;
-            case CANCELED:
-                return Event.StatusEnum.CANCELED;
-            case FINISHED:
-                return Event.StatusEnum.FINISHED;
-            default:
-                throw new BadRequestException("Unexpected eventStatus: " + createEventStatus.getValue());
-        }
     }
 }
 

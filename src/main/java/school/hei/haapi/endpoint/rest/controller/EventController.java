@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import school.hei.haapi.endpoint.rest.mapper.EventMapper;
-import school.hei.haapi.endpoint.rest.model.Fee;
+import school.hei.haapi.endpoint.rest.model.CreateEvent;
 import school.hei.haapi.model.BoundedPageSize;
 import school.hei.haapi.model.Event;
 import school.hei.haapi.model.PageFromOne;
@@ -25,11 +25,11 @@ public class EventController {
     private final EventMapper eventMapper;
 
     @GetMapping("/events")
-    public List<Event> getEvent(
+    public List<school.hei.haapi.endpoint.rest.model.Event> getEvent(
             @RequestParam PageFromOne page,
             @RequestParam("page_size") BoundedPageSize pageSize,
-            @RequestParam(required = false) Event.StatusEnum status) {
-        return eventService.getAllEvent(page, pageSize, status).stream()
+            @RequestParam(required = false) String status) {
+        return eventService.getAllEvent(page, pageSize, school.hei.haapi.endpoint.rest.model.Event.StatusEnum.valueOf(status)).stream()
                 .map(eventMapper::toRestEvent)
                 .collect(toUnmodifiableList());
     }
@@ -40,9 +40,9 @@ public class EventController {
     }
 
     @PutMapping("/events")
-    public List<Event> createOrUpdate(@RequestBody List<Event> events){
-        var saved = eventService.createEvent(events.stream()
-                .map(eventMapper::toDomainEvent)
+    public List<school.hei.haapi.endpoint.rest.model.Event> createOrUpdate(@RequestBody List<CreateEvent> toCreate){
+        var saved = eventService.createEvent(toCreate.stream()
+                .map((CreateEvent restEvent) -> eventMapper.toDomainEvent(restEvent))
                 .collect(toUnmodifiableList()));
         return saved.stream()
                 .map(eventMapper::toRestEvent)
