@@ -1360,10 +1360,8 @@ components:
           format: date-time
         start_time:
           type: string
-          format: time
         finish_time:
           type: string
-          format: time
         supervisor:
           type: string
           enum:
