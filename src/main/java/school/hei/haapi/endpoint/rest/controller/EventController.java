@@ -1,6 +1,7 @@
 package school.hei.haapi.endpoint.rest.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -8,9 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import school.hei.haapi.endpoint.rest.mapper.EventMapper;
-import school.hei.haapi.endpoint.rest.model.CreateEvent;
+import school.hei.haapi.endpoint.rest.model.Event;
 import school.hei.haapi.model.BoundedPageSize;
-import school.hei.haapi.model.Event;
 import school.hei.haapi.model.PageFromOne;
 import school.hei.haapi.service.EventService;
 
@@ -20,12 +20,13 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin
 public class EventController {
     private final EventService  eventService;
     private final EventMapper eventMapper;
 
     @GetMapping("/events")
-    public List<school.hei.haapi.endpoint.rest.model.Event> getEvent(
+    public List<school.hei.haapi.endpoint.rest.model.Event> getEvents(
             @RequestParam PageFromOne page,
             @RequestParam("page_size") BoundedPageSize pageSize,
             @RequestParam(required = false) String status) {
@@ -35,17 +36,17 @@ public class EventController {
     }
 
     @GetMapping("/events/{id}")
-    public Event getEventById(@PathVariable String id){
-        return eventService.getById(id);
+    public Event getCourseById(@PathVariable("id") String id) {
+        return eventMapper.toRestEvent(eventService.getById(id));
     }
-
     @PutMapping("/events")
-    public List<school.hei.haapi.endpoint.rest.model.Event> createOrUpdate(@RequestBody List<CreateEvent> toCreate){
+    public List<Event> createOrUpdateEvents(@RequestBody List<Event> toCreate){
         var saved = eventService.createEvent(toCreate.stream()
-                .map((CreateEvent restEvent) -> eventMapper.toDomainEvent(restEvent))
+                .map((Event restEvent) -> eventMapper.toDomainEvent(restEvent))
                 .collect(toUnmodifiableList()));
         return saved.stream()
                 .map(eventMapper::toRestEvent)
                 .collect(toUnmodifiableList());
     }
+
 }
