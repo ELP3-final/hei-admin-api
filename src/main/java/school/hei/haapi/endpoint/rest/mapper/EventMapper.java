@@ -2,14 +2,12 @@ package school.hei.haapi.endpoint.rest.mapper;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import school.hei.haapi.endpoint.rest.model.CreateEvent;
 import school.hei.haapi.model.Event;
 
 import java.time.Instant;
 
 
 @Component
-@AllArgsConstructor
 public class EventMapper {
     public school.hei.haapi.endpoint.rest.model.Event toRestEvent(Event event) {
         var restEvent = new school.hei.haapi.endpoint.rest.model.Event();
@@ -27,7 +25,7 @@ public class EventMapper {
             return restEvent;
     }
 
-    public Event toDomainEvent(CreateEvent restEvent) {
+    public Event toDomainEvent(school.hei.haapi.endpoint.rest.model.Event restEvent) {
         return Event.builder()
                 .name(restEvent.getName())
                 .type(school.hei.haapi.endpoint.rest.model.Event.TypeEnum.valueOf(restEvent.getType().toString()))
