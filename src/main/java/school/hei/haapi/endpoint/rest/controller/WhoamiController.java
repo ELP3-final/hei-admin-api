@@ -7,7 +7,7 @@ import school.hei.haapi.endpoint.rest.model.Whoami;
 import school.hei.haapi.endpoint.rest.security.model.Principal;
 
 @RestController
-public class WhoamiController {
+public class  WhoamiController {
 
   @GetMapping("/whoami")
   public Whoami hello(@AuthenticationPrincipal Principal principal) {

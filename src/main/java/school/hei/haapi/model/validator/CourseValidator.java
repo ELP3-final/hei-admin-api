@@ -1,5 +1,6 @@
 package school.hei.haapi.model.validator;
 
+import org.springframework.stereotype.Component;
 import school.hei.haapi.model.Course;
 import school.hei.haapi.model.exception.BadRequestException;
 
@@ -9,6 +10,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+@Component
 public class CourseValidator implements Consumer<Course> {
     public void accept(List<Course> courses) {
         courses.forEach(this::accept);
