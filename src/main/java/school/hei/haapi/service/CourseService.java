@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import school.hei.haapi.model.BoundedPageSize;
 import school.hei.haapi.model.Course;
 import school.hei.haapi.model.PageFromOne;
@@ -17,21 +18,16 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @Service
 @AllArgsConstructor
+@CrossOrigin
 public class CourseService {
     private final CourseRepository repository;
 
     private final CourseValidator courseValidator;
 
-    public List<Course> getAll(String name, String ref, PageFromOne page, BoundedPageSize pageSize) {
-        Pageable pageable = PageRequest.of(
-                page.getValue() - 1,
-                pageSize.getValue(),
-                Sort.by(DESC, "dueDatetime")
-        );
+    public List<Course> getAll(String name, String ref) {
         return repository.getByCriteria(
                 name,
-                ref,
-                pageable
+                ref
         );
     }
 

@@ -60,8 +60,8 @@ public class CourseIT {
     static Course course1() {
         return new Course()
                 .id(COURSE1_ID)
-                .name("Algorithmic")
-                .ref("PROG1")
+                .name("PROG1")
+                .ref("Algorithmic")
                 .credits(15)
                 .totalHours(20);
     }
@@ -121,7 +121,7 @@ public class CourseIT {
 
         TeachingApi api = new TeachingApi(student1Client);
         Course actual1 = api.getCourseById(COURSE1_ID);
-        List<Course> actualCourse = api.getCourses(1, 5);
+        List<Course> actualCourse = api.getCourses();
 
         assertEquals(course1(), actual1);
         assertTrue(actualCourse.contains(course1()));

@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface CourseRepository extends JpaRepository<Course, String> {
         @Query("SELECT S from Course S where S.name like concat('%', :name, '%') and S.ref like concat('%', :ref, '%') ")
-    List<Course> getByCriteria(String ref, String name, Pageable pageable);
+    List<Course> getByCriteria(String ref, String name);
 }

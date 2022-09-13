@@ -1,6 +1,7 @@
 package school.hei.haapi.endpoint.rest.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,18 +20,17 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin
 public class CourseController {
     private final CourseService courseService;
     private final CourseMapper courseMapper;
 
     @GetMapping("/courses")
     public List<Course> getCourses(
-            @RequestParam("page") PageFromOne page,
-            @RequestParam("page_size") BoundedPageSize pageSize,
             @RequestParam(value = "name", required = false, defaultValue = "") String name,
             @RequestParam(value = "ref", required = false, defaultValue = "") String ref
     ) {
-        return courseService.getAll(name, ref, page, pageSize).stream()
+        return courseService.getAll(name, ref).stream()
                 .map(courseMapper::toRestCourse)
                 .collect(toUnmodifiableList());
     }
