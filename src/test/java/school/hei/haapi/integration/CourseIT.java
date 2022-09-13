@@ -13,6 +13,8 @@ import school.hei.haapi.endpoint.rest.api.TeachingApi;
 import school.hei.haapi.endpoint.rest.client.ApiClient;
 import school.hei.haapi.endpoint.rest.client.ApiException;
 import school.hei.haapi.endpoint.rest.model.Course;
+import school.hei.haapi.endpoint.rest.model.Group;
+import school.hei.haapi.endpoint.rest.model.Place;
 import school.hei.haapi.endpoint.rest.security.cognito.CognitoComponent;
 import school.hei.haapi.integration.conf.AbstractContextInitializer;
 import school.hei.haapi.integration.conf.TestUtils;
@@ -20,6 +22,7 @@ import school.hei.haapi.integration.conf.TestUtils;
 import java.time.Instant;
 import java.util.List;
 
+import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -31,6 +34,7 @@ import static school.hei.haapi.integration.conf.TestUtils.COURSE2_ID;
 import static school.hei.haapi.integration.conf.TestUtils.COURSE3_ID;
 import static school.hei.haapi.integration.conf.TestUtils.GROUP1_ID;
 import static school.hei.haapi.integration.conf.TestUtils.MANAGER1_TOKEN;
+import static school.hei.haapi.integration.conf.TestUtils.PLACE1_ID;
 import static school.hei.haapi.integration.conf.TestUtils.STUDENT1_TOKEN;
 import static school.hei.haapi.integration.conf.TestUtils.TEACHER1_TOKEN;
 import static school.hei.haapi.integration.conf.TestUtils.anAvailableRandomPort;
@@ -81,6 +85,15 @@ public class CourseIT {
     }
 
 
+    public static Course someCreatableCourse() {
+        Course course= new Course();
+        course.setName("Some name");
+        course.setRef("CRs-" + randomUUID());
+        course.setCredits(3);
+        course.setTotalHours(30);
+        return course;
+    }
+
     @BeforeEach
     void setUp() {
         setUpCognito(cognitoComponentMock);
@@ -88,56 +101,76 @@ public class CourseIT {
 
     @Test
     void badtoken_read_ko() {
+        ApiClient anonymousClient = anApiClient(BAD_TOKEN);
+
+        TeachingApi api = new TeachingApi(anonymousClient);
+        assertThrowsForbiddenException(api::getCourses);
     }
 
     @Test
     void badtoken_write_ko() {
+        ApiClient anonymousClient = anApiClient(BAD_TOKEN);
+
+        TeachingApi api = new TeachingApi(anonymousClient);
+        assertThrowsForbiddenException(() -> api.createOrUpdateGroups(List.of()));
     }
 
     @Test
     void student_read_ok() throws ApiException {
         ApiClient student1Client = anApiClient(STUDENT1_TOKEN);
-        TeachingApi api = new TeachingApi(student1Client);
 
+        TeachingApi api = new TeachingApi(student1Client);
         Course actual1 = api.getCourseById(COURSE1_ID);
-        List<Course> actualCourses = api.getCourses();
+        List<Course> actualCourse = api.getCourses(1, 5);
 
         assertEquals(course1(), actual1);
-        assertTrue(actualCourses.contains(course1()));
-        assertTrue(actualCourses.contains(course2()));
-    }
-
-    @Test
-    void manager_read_ok() throws ApiException {
-    }
-
-    @Test
-    void student_read_ko() {
-    }
-
-    @Test
-    void teacher_read_ko() {
-    }
-
-    @Test
-    void manager_write_ok() throws ApiException {
-    }
-
-    @Test
-    void teacher_write_ko() {
+        assertTrue(actualCourse.contains(course1()));
+        assertTrue(actualCourse.contains(course1()));
     }
 
     @Test
     void student_write_ko() {
+        ApiClient student1Client = anApiClient(STUDENT1_TOKEN);
+
+        TeachingApi api = new TeachingApi(student1Client);
+        assertThrowsForbiddenException(() -> api.createOrUpdateGroups(List.of()));
     }
 
     @Test
-    void manager_write_ko() throws ApiException {
+    void teacher_write_ko() {
+        ApiClient teacher1Client = anApiClient(TEACHER1_TOKEN);
+
+        TeachingApi api = new TeachingApi(teacher1Client);
+        assertThrowsForbiddenException(() -> api.createOrUpdateGroups(List.of()));
+    }
+    @Test
+    void manager_write_create_ok() throws ApiException {
+        ApiClient manager1Client = anApiClient(MANAGER1_TOKEN);
+        Course toCreate3 = someCreatableCourse();
+
+        TeachingApi api = new TeachingApi(manager1Client);
+        Course created = api.createOrUpdateCourses(toCreate3);
+
+        assertNotNull(created);
+        Course created3 = created;
+        assertTrue(isValidUUID(created3.getId()));
+        toCreate3.setId(created3.getId());
+        assertNotNull(created3.getId());
+    }
+    @Test
+    void manager_write_update_ok() throws ApiException {
+        ApiClient manager1Client = anApiClient(MANAGER1_TOKEN);
+        TeachingApi api = new TeachingApi(manager1Client);
+        Course toUpdate = api.createOrUpdateCourses(
+                someCreatableCourse());
+        Course toUpdate0 = toUpdate;
+        toUpdate0.setName("A new name zero");
+
+        Course updated = api.createOrUpdateCourses(toUpdate);
+
+        assertNotNull(updated);
     }
 
-    @Test
-    void manager_write_with_some_bad_fields_ko() {
-    }
 
     static class ContextInitializer extends AbstractContextInitializer {
         public static final int SERVER_PORT = anAvailableRandomPort();
