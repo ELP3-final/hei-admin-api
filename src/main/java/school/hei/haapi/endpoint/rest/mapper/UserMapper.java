@@ -10,6 +10,21 @@ import school.hei.haapi.model.User;
 @Component
 public class UserMapper {
 
+  public school.hei.haapi.endpoint.rest.model.User toRestUser(User user){
+    school.hei.haapi.endpoint.rest.model.User restUser = new school.hei.haapi.endpoint.rest.model.User();
+    restUser.setFirstName(user.getFirstName());
+    restUser.setLastName(user.getLastName());
+    restUser.setEmail(user.getEmail());
+    restUser.setRef(user.getRef());
+    restUser.setStatus(EnableStatus.fromValue(user.getStatus().toString()));
+    restUser.setPhone(user.getPhone());
+    restUser.setEntranceDatetime(user.getEntranceDatetime());
+    restUser.setBirthDate(user.getBirthDate());
+    restUser.setSex(school.hei.haapi.endpoint.rest.model.User.SexEnum.fromValue(user.getSex().toString()));
+    restUser.setAddress(user.getAddress());
+
+    return restUser;
+  }
   public Student toRestStudent(User user) {
     Student restStudent = new Student();
     restStudent.setId(user.getId());

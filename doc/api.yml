@@ -1021,6 +1021,76 @@ paths:
           $ref: "#/components/responses/429"
         "500":
           $ref: "#/components/responses/500"
+  /events/{event_id}/event_participants:
+    get:
+      tags:
+        - Attending
+      summary: Get all the event participants.
+      parameters:
+        - name: event_id
+          in: path
+          required: true
+          schema:
+            type: string
+      operationId: getEventParticipants
+      responses:
+        '200':
+          description: List of all the participants
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventParticipant'
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+    put:
+      tags:
+        - Attending
+      summary: Create or update event participants
+      parameters:
+        - name: event_id
+          in: path
+          required: true
+          schema:
+            type: string
+      operationId: createOrUpdateEventParticipants
+      requestBody:
+        description: Event Participants to create or to update
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateOrUpdateEventParticipant'
+      responses:
+        '200':
+          description: Created or updated event participants
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventParticipant'
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
 components:
   securitySchemes:
     BearerAuth:
@@ -1309,13 +1379,121 @@ components:
           type: string
         group_id:
           type: string
+    UpdateEvent:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - COURSE
+            - EXAMEN
+            - OTHER
+        date:
+          type: string
+          format: date-time
+        start_time:
+          type: string
+          format: time
+        finish_time:
+          type: string
+          format: time
+        supervisor:
+          type: string
+          enum:
+            - TEACHER
+            - ADMINISTRATOR
+        status:
+          type: string
+          enum:
+            - ONGOING
+            - CANCELED
+        place_id:
+          type: string
+        group_id:
+          type: string
+    Events:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - COURSE
+            - EXAMEN
+            - OTHER
+        date:
+          type: string
+          format: date-time
+        start_time:
+          type: string
+          format: time
+        finish_time:
+          type: string
+          format: time
+        supervisor:
+          type: string
+          enum:
+            - TEACHER
+            - ADMINISTRATOR
+        status:
+          type: string
+          enum:
+            - ONGOING
+            - CANCELED
     Event:
       type: object
       properties:
         id:
           type: string
+        place:
+          $ref: '#/components/schemas/Place'
+        group:
+          $ref: '#/components/schemas/Group'
       allOf:
         - $ref: '#/components/schemas/CreateEvent'
+    CreateOrUpdateEventParticipant:
+      type: object
+      properties:
+        id:
+          type: string
+        event_id:
+          type: string
+        user_id:
+          type: string
+        event_role:
+          type: string
+          enum:
+            - SUPERVISOR
+            - ATTENDANT
+        attendance:
+          type: string
+          enum:
+            - EXPECTED
+            - HERE
+            - MISSING
+    EventParticipant:
+      type: object
+      properties:
+        id:
+          type: string
+        event_role:
+          type: string
+          enum:
+            - SUPERVISOR
+            - ATTENDANT
+        attendance:
+          type: string
+          enum:
+            - EXPECTED
+            - HERE
+            - MISSING
+        user:
+          $ref: '#/components/schemas/User'
     CreatePlace:
       type: object
       properties:
