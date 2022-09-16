@@ -957,12 +957,19 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
+  /places/{place_id}/events:
     put:
       tags:
         - Attending
       summary: create or update events
       description: Update events when `id` are provided and create events otherwise.
-      operationId: putEvents
+      operationId: saveOrUpdateEvents
+      parameters:
+        - name: place_id
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         required: true
         description: Events to update
@@ -1377,72 +1384,6 @@ components:
           type: string
         group_id:
           type: string
-    UpdateEvent:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-            - COURSE
-            - EXAMEN
-            - OTHER
-        date:
-          type: string
-          format: date-time
-        start_time:
-          type: string
-          format: time
-        finish_time:
-          type: string
-          format: time
-        supervisor:
-          type: string
-          enum:
-            - TEACHER
-            - ADMINISTRATOR
-        status:
-          type: string
-          enum:
-            - ONGOING
-            - CANCELED
-        place_id:
-          type: string
-        group_id:
-          type: string
-    Events:
-      type: object
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-            - COURSE
-            - EXAMEN
-            - OTHER
-        date:
-          type: string
-          format: date-time
-        start_time:
-          type: string
-          format: time
-        finish_time:
-          type: string
-          format: time
-        supervisor:
-          type: string
-          enum:
-            - TEACHER
-            - ADMINISTRATOR
-        status:
-          type: string
-          enum:
-            - ONGOING
-            - CANCELED
     Event:
       type: object
       properties:
