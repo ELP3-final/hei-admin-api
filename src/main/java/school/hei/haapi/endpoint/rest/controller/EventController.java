@@ -4,12 +4,16 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import school.hei.haapi.endpoint.rest.mapper.EventMapper;
+import school.hei.haapi.endpoint.rest.model.CreateEvent;
+import school.hei.haapi.endpoint.rest.model.CreateFee;
 import school.hei.haapi.endpoint.rest.model.Event;
+import school.hei.haapi.endpoint.rest.model.Fee;
 import school.hei.haapi.model.BoundedPageSize;
 import school.hei.haapi.model.PageFromOne;
 import school.hei.haapi.service.EventService;
@@ -39,14 +43,24 @@ public class EventController {
     public Event getCourseById(@PathVariable("id") String id) {
         return eventMapper.toRestEvent(eventService.getById(id));
     }
-    @PutMapping("/events")
-    public List<Event> createOrUpdateEvents(@RequestBody List<Event> toCreate){
+
+    @PutMapping("/places/{place_id}/events")
+    public List<Event> createFees(
+            @PathVariable String placeId, @RequestBody List<CreateEvent> toCreate) {
+        return eventService.createEvent(
+                        eventMapper.toDomainEvent(placeId, toCreate)).stream()
+                .map(eventMapper::toRestEvent)
+                .collect(toUnmodifiableList());
+    }
+   /* @PutMapping("/events")
+    public List<Event> createOrUpdateEvents
+            (@RequestBody List<Event> toCreate){
         var saved = eventService.createEvent(toCreate.stream()
                 .map((Event restEvent) -> eventMapper.toDomainEvent(restEvent))
                 .collect(toUnmodifiableList()));
         return saved.stream()
                 .map(eventMapper::toRestEvent)
                 .collect(toUnmodifiableList());
-    }
+    }*/
 
 }

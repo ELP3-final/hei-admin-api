@@ -54,18 +54,10 @@ public class Event implements Serializable {
     @Type(type = "pgsql_enum")
     @Enumerated(EnumType.STRING)
     @Transient
-    private school.hei.haapi.endpoint.rest.model.Event.SupervisorEnum supervisor;
-
-    @Type(type = "pgsql_enum")
-    @Enumerated(EnumType.STRING)
-    @Transient
     private school.hei.haapi.endpoint.rest.model.Event.StatusEnum status;
 
     @ManyToOne
     @JoinColumn(name = "place_id", nullable = false)
     private Place place;
 
-    @ManyToOne
-    @JoinColumn(name = "group_id", nullable = false)
-    private Group group;
 }
