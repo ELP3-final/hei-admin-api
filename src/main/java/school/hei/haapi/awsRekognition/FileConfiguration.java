@@ -11,18 +11,18 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FileConfiguration {
 
-    @Value("${access.key.id}")
+    @Value("${aws.access.key.id}")
     private String accessKeyId;
 
-    @Value("${access.key.secret}")
-    private String accessKeySecret;
+    @Value("${aws.access.secret.key}")
+    private String accessSecretKey;
 
-    @Value("${s3.region.name}")
+    @Value("${aws.s3.region.name}")
     private String s3RegionName;
 
     @Bean
     public AmazonS3 getAmazonS3Client() {
-        final BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(accessKeyId, accessKeySecret);
+        final BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(accessKeyId, accessSecretKey);
         // Get Amazon S3 client and return the S3 client object
         return AmazonS3ClientBuilder
                 .standard()
