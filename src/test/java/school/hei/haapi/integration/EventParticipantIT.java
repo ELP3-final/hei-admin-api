@@ -118,7 +118,7 @@ public class EventParticipantIT {
   }
 
   @Test
-  void teacher_read_ok() {
+  void teacher_read_ok() throws ApiException {
     ApiClient teacher1Client = anApiClient(TEACHER1_TOKEN);
     AttendingApi api = new AttendingApi(teacher1Client);
     List<EventParticipant> participants = api.getEventParticipants(EVENT1_ID);
@@ -128,8 +128,9 @@ public class EventParticipantIT {
 
 
   @Test
-  void manager_read_ok() {
+  void manager_read_ok() throws ApiException {
     ApiClient manager1Client = anApiClient(MANAGER1_TOKEN);
+
     AttendingApi api = new AttendingApi(manager1Client);
     List<EventParticipant> participants = api.getEventParticipants(EVENT1_ID);
     assertTrue(participants.contains(eventParticipant1()));
@@ -148,12 +149,12 @@ public class EventParticipantIT {
   }
 
   @Test
-  void manager_write_ok(){
+  void manager_write_ok() throws ApiException {
     ApiClient manager1Client = anApiClient(MANAGER1_TOKEN);
     AttendingApi api = new AttendingApi(manager1Client);
     List<CreateOrUpdateEventParticipant> toAdd = new ArrayList<CreateOrUpdateEventParticipant>();
     toAdd.add(creatableEventParticipant1());
-    List<EventParticipant> news = api.createOrUpdateEventParticipants(EVENT1_ID,toadd);
+    List<EventParticipant> news = api.createOrUpdateEventParticipants(EVENT1_ID,toAdd);
     List<EventParticipant> participants = api.getEventParticipants(EVENT1_ID);
     assertTrue(participants.containsAll(news));
   }

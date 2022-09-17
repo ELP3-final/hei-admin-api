@@ -43,7 +43,7 @@ import static school.hei.haapi.integration.conf.TestUtils.setUpCognito;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @Testcontainers
-@ContextConfiguration(initializers = FeeIT.ContextInitializer.class)
+@ContextConfiguration(initializers = EventIT.ContextInitializer.class)
 @AutoConfigureMockMvc
 public class EventIT {
     @MockBean
