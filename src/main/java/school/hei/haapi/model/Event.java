@@ -20,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDate;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -45,7 +46,7 @@ public class Event implements Serializable {
     @Transient
     private school.hei.haapi.endpoint.rest.model.Event.TypeEnum type;
 
-    private LocalDate date;
+    private Instant date;
 
     private String startTime;
 

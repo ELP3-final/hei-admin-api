@@ -4,12 +4,6 @@ $$
         if not exists(select from pg_type where typname = 'event_event_role') then
             create type "event_event_role" as enum ('SUPERVISOR', 'ATTENDANT');
         end if;
-    end
-$$;
-
-do
-$$
-    begin
         if not exists(select from pg_type where typname = 'event_attendance') then
             create type "event_attendance" as enum ('EXPECTED', 'HERE','MISSING');
         end if;

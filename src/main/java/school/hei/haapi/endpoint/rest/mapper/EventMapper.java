@@ -28,7 +28,7 @@ public class EventMapper {
      restEvent.setId(event.getId());
      restEvent.setName(event.getName());
      restEvent.setType(event.getType());
-     restEvent.setDate(Instant.from(event.getDate()));
+     restEvent.setDate(event.getDate());
      restEvent.setStartTime(event.getStartTime());
      restEvent.setFinishTime(event.getFinishTime());
      restEvent.setStatus(event.getStatus());
