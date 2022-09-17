@@ -46,11 +46,9 @@ public class Event implements Serializable {
     @Transient
     private school.hei.haapi.endpoint.rest.model.Event.TypeEnum type;
 
-    private Instant date;
+    private Instant startTime;
 
-    private String startTime;
-
-    private String finishTime;
+    private Instant finishTime;
 
     @Type(type = "pgsql_enum")
     @Enumerated(EnumType.STRING)

@@ -1362,18 +1362,12 @@ components:
             - COURSE
             - EXAMEN
             - OTHER
-        date:
-          type: string
-          format: date-time
         start_time:
           type: string
+          format: date-time
         finish_time:
           type: string
-        supervisor:
-          type: string
-          enum:
-            - TEACHER
-            - ADMINISTRATOR
+          format: date-time
         status:
           type: string
           enum:
@@ -1382,8 +1376,6 @@ components:
             - FINISHED
         place_id:
           type: string
-        group_id:
-          type: string
     Event:
       type: object
       properties:
@@ -1391,8 +1383,6 @@ components:
           type: string
         place:
           $ref: '#/components/schemas/Place'
-        group:
-          $ref: '#/components/schemas/Group'
       allOf:
         - $ref: '#/components/schemas/CreateEvent'
     CreateOrUpdateEventParticipant:

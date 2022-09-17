@@ -132,7 +132,7 @@ public class EventParticipantIT {
     ApiClient manager1Client = anApiClient(MANAGER1_TOKEN);
 
     AttendingApi api = new AttendingApi(manager1Client);
-    List<EventParticipant> participants = api.getEventParticipants(EVENT1_ID);
+     List<EventParticipant> participants = api.getEventParticipants(EVENT1_ID);
     assertTrue(participants.contains(eventParticipant1()));
     assertTrue(participants.contains(eventParticipant2()));
   }

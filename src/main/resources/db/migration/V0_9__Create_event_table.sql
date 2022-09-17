@@ -16,9 +16,8 @@ create table if not exists "event"
         constraint event_pk primary key default uuid_generate_v4(),
     name                varchar                 not null,
     type              event_type                not null,
-    date      timestamp with time zone not null,
-    start_time         varchar                  not null,
-    finish_time        varchar                  not null,
+    start_time      timestamp with time zone        not null,
+    finish_time    timestamp with time zone         not null,
     status          status_type                 not null,
     place_id           varchar                  not null
             constraint event_place_id_fk references "place"(id)

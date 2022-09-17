@@ -28,7 +28,6 @@ public class EventMapper {
      restEvent.setId(event.getId());
      restEvent.setName(event.getName());
      restEvent.setType(event.getType());
-     restEvent.setDate(event.getDate());
      restEvent.setStartTime(event.getStartTime());
      restEvent.setFinishTime(event.getFinishTime());
      restEvent.setStatus(event.getStatus());
@@ -40,8 +39,6 @@ public class EventMapper {
      return Event.builder()
                 .name(restEvent.getName())
                 .type(school.hei.haapi.endpoint.rest.model.Event.TypeEnum.valueOf(restEvent.getType().toString()))
-                .startTime(restEvent.getStartTime())
-                .finishTime(restEvent.getFinishTime())
                 .status(school.hei.haapi.endpoint.rest.model.Event.StatusEnum.valueOf(restEvent.getType().toString()))
                 .place(place)
                 .build();

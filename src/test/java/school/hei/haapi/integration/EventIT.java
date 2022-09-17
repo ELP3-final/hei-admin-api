@@ -65,9 +65,8 @@ public class EventIT {
         event.setId("EVENT1_ID");
         event.setName("DONNEE 2");
         event.setType(Event.TypeEnum.COURSE);
-        event.setDate(Instant.parse("2021-11-08T08:25:24.00Z"));
-        event.setStartTime("8h");
-        event.setFinishTime("10h");
+        event.setStartTime(Instant.parse("2021-11-08T08:25:24.00Z"));
+        event.setFinishTime(Instant.parse("2021-11-08T08:25:24.00Z"));
         event.setStatus(Event.StatusEnum.ONGOING);
         event.setPlaceId("PLACE1_ID");
         return event;
@@ -78,9 +77,8 @@ public class EventIT {
         event.setId("EVENT2_ID");
         event.setName("SYS 2");
         event.setType(Event.TypeEnum.COURSE);
-        event.setDate(Instant.parse("2021-11-08T08:25:24.00Z"));
-        event.setStartTime("10h");
-        event.setFinishTime("12h");
+        event.setStartTime(Instant.parse("2021-11-08T08:25:24.00Z"));
+        event.setFinishTime(Instant.parse("2021-11-08T08:25:24.00Z"));
         event.setStatus(Event.StatusEnum.ONGOING);
         event.setPlaceId("PLACE2_ID");
         return event;
@@ -91,9 +89,8 @@ public class EventIT {
         Event event = new Event();
         event.setName("SYS 2" + randomUUID());
         event.setType(Event.TypeEnum.COURSE);
-        event.setDate(Instant.parse("2021-11-08T08:25:24.00Z"));
-        event.setStartTime("10h");
-        event.setFinishTime("12h");
+        event.setStartTime(Instant.parse("2021-11-08T08:25:24.00Z"));
+        event.setFinishTime(Instant.parse("2021-11-08T08:25:24.00Z"));
         event.setStatus(Event.StatusEnum.ONGOING);
         event.setPlaceId("PLACE2_ID");
         return event;
